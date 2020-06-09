@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 08 2020 г., 17:28
+-- Время создания: Июн 09 2020 г., 09:01
 -- Версия сервера: 10.3.22-MariaDB
 -- Версия PHP: 7.1.33
 
@@ -32,12 +32,20 @@ CREATE TABLE `animals` (
   `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_birth` date NOT NULL,
   `gender_id` bigint(20) NOT NULL,
-  `habiat_id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `racion_animals_id` bigint(20) NOT NULL,
-  `id_vet` bigint(20) NOT NULL,
-  `id_smotr` bigint(20) NOT NULL
+  `habiat_id` bigint(20) DEFAULT NULL,
+  `racion_animals_id` bigint(20) DEFAULT NULL,
+  `id_vet` bigint(20) DEFAULT NULL,
+  `id_smotr` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `animals`
+--
+
+INSERT INTO `animals` (`animals_id`, `firstname`, `date_birth`, `gender_id`, `habiat_id`, `racion_animals_id`, `id_vet`, `id_smotr`) VALUES
+(1, 'Джон', '2001-03-15', 1, 1, 2, 2, 1),
+(2, 'Влад', '2001-06-09', 2, 1, 2, 2, 1),
+(3, 'Жангир', '2002-08-15', 2, 1, 2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -47,9 +55,16 @@ CREATE TABLE `animals` (
 
 CREATE TABLE `bird` (
   `animals_id` bigint(20) NOT NULL,
-  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gruppa` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `bird`
+--
+
+INSERT INTO `bird` (`animals_id`, `name`, `origin`) VALUES
+(1, 'Петух', 'Улица');
 
 -- --------------------------------------------------------
 
@@ -62,6 +77,14 @@ CREATE TABLE `gender` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `gender`
+--
+
+INSERT INTO `gender` (`gender_id`, `name`) VALUES
+(1, 'Мужской'),
+(2, 'Женский');
+
 -- --------------------------------------------------------
 
 --
@@ -71,8 +94,15 @@ CREATE TABLE `gender` (
 CREATE TABLE `mammals` (
   `animals_id` bigint(20) NOT NULL,
   `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gruppa` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `mammals`
+--
+
+INSERT INTO `mammals` (`animals_id`, `origin`, `name`) VALUES
+(2, 'Джунгли', 'Горилла');
 
 -- --------------------------------------------------------
 
@@ -88,10 +118,21 @@ CREATE TABLE `personal` (
   `date_birth` date NOT NULL,
   `gender_id` bigint(20) NOT NULL,
   `phone_number` bigint(20) NOT NULL,
-  `animals_id` bigint(20) NOT NULL,
+  `animals_id` bigint(20) DEFAULT NULL,
+  `login` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pass` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role_id` int(11) NOT NULL,
-  `married_id` bigint(20) NOT NULL
+  `married_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `personal`
+--
+
+INSERT INTO `personal` (`user_id`, `lastname`, `firstname`, `patronymic`, `date_birth`, `gender_id`, `phone_number`, `animals_id`, `login`, `pass`, `role_id`, `married_id`) VALUES
+(2, 'Моисеенко', 'Дмитрий', 'Юрьевич', '2001-03-15', 1, 77784259976, 1, 'admin', 'admin', 1, NULL),
+(3, 'Смит', 'Джон', 'Тимофеевич', '2002-04-08', 1, 77784359976, 3, 'border_hokage', 'border_hokage', 2, NULL),
+(4, 'Громов', 'Антон', 'Анатольевич', '1998-04-05', 1, 77783259976, 2, '123', '123', 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -101,12 +142,18 @@ CREATE TABLE `personal` (
 
 CREATE TABLE `racion_animals` (
   `racion_animals_id` bigint(20) NOT NULL,
-  `animals_id` bigint(20) NOT NULL,
-  `number_type` int(11) NOT NULL,
+  `animals_id` bigint(20) DEFAULT NULL,
   `list_product` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `racion_type_id` bigint(20) NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `racion_animals`
+--
+
+INSERT INTO `racion_animals` (`racion_animals_id`, `animals_id`, `list_product`, `racion_type_id`, `name`) VALUES
+(2, 1, 'Корм диетический,Корм гипоаллергенный,', 2, 'Детический-гипоаллергенный');
 
 -- --------------------------------------------------------
 
@@ -119,6 +166,15 @@ CREATE TABLE `racion_type` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `racion_type`
+--
+
+INSERT INTO `racion_type` (`racion_type_id`, `name`) VALUES
+(1, 'Детский'),
+(2, 'Диетический'),
+(3, 'Усиленный');
+
 -- --------------------------------------------------------
 
 --
@@ -127,9 +183,16 @@ CREATE TABLE `racion_type` (
 
 CREATE TABLE `reptail` (
   `animals_id` bigint(20) NOT NULL,
-  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gruppa` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `origin` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `reptail`
+--
+
+INSERT INTO `reptail` (`animals_id`, `name`, `origin`) VALUES
+(3, 'Хомяк', 'Из магазина');
 
 -- --------------------------------------------------------
 
@@ -142,6 +205,52 @@ CREATE TABLE `role` (
   `sys_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `role`
+--
+
+INSERT INTO `role` (`role_id`, `sys_name`, `name`) VALUES
+(1, 'admin', 'Администратор'),
+(2, 'veterinar', 'Ветеринар'),
+(3, 'smotryachie', 'Смотрящий'),
+(4, 'animals', 'Животные');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `smotr`
+--
+
+CREATE TABLE `smotr` (
+  `id_smotr` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `smotr`
+--
+
+INSERT INTO `smotr` (`id_smotr`, `user_id`) VALUES
+(1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `veterinar`
+--
+
+CREATE TABLE `veterinar` (
+  `id_vet` bigint(20) NOT NULL,
+  `user_i` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `veterinar`
+--
+
+INSERT INTO `veterinar` (`id_vet`, `user_i`) VALUES
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -157,6 +266,13 @@ CREATE TABLE `winter` (
   `temperatura` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `winter`
+--
+
+INSERT INTO `winter` (`animals_id`, `contry`, `date_start`, `date_end`, `temperatura`) VALUES
+(1, 'Казахстан', '2020-06-06', '2021-09-01', 10);
+
 -- --------------------------------------------------------
 
 --
@@ -168,6 +284,13 @@ CREATE TABLE `winter_r` (
   `nortmal_t` int(11) NOT NULL,
   `date_winter` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `winter_r`
+--
+
+INSERT INTO `winter_r` (`animals_id`, `nortmal_t`, `date_winter`) VALUES
+(3, 15, '2020-06-02');
 
 -- --------------------------------------------------------
 
@@ -182,6 +305,13 @@ CREATE TABLE `zona_obitanya` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Дамп данных таблицы `zona_obitanya`
+--
+
+INSERT INTO `zona_obitanya` (`habiat_id`, `name`, `info`) VALUES
+(1, 'Африка', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry');
+
+--
 -- Индексы сохранённых таблиц
 --
 
@@ -190,10 +320,11 @@ CREATE TABLE `zona_obitanya` (
 --
 ALTER TABLE `animals`
   ADD PRIMARY KEY (`animals_id`),
-  ADD KEY `FK_animals_gender_gender_id` (`gender_id`),
   ADD KEY `FK_animals_zona_obitanya_habiat_id` (`habiat_id`),
-  ADD KEY `FK_animals` (`id_smotr`),
-  ADD KEY `FK_animals_personal_user_id` (`id_vet`);
+  ADD KEY `FK_animals_racion_animals_racion_animals_id` (`racion_animals_id`),
+  ADD KEY `FK_animals_gender_gender_id` (`gender_id`),
+  ADD KEY `FK_animals_smotr_id_smotr` (`id_smotr`),
+  ADD KEY `FK_animals_veterinar_id_vet` (`id_vet`);
 
 --
 -- Индексы таблицы `bird`
@@ -218,17 +349,18 @@ ALTER TABLE `mammals`
 --
 ALTER TABLE `personal`
   ADD PRIMARY KEY (`user_id`),
-  ADD KEY `FK_personal_gender_gender_id` (`gender_id`),
   ADD KEY `FK_personal_personal_user_id` (`married_id`),
-  ADD KEY `FK_personal_role_role_id` (`role_id`);
+  ADD KEY `FK_personal_gender_gender_id` (`gender_id`),
+  ADD KEY `FK_personal_role_role_id` (`role_id`),
+  ADD KEY `FK_personal_animals_animals_id` (`animals_id`);
 
 --
 -- Индексы таблицы `racion_animals`
 --
 ALTER TABLE `racion_animals`
   ADD PRIMARY KEY (`racion_animals_id`),
-  ADD KEY `FK_racion_animals_racion_type_racion_type_id` (`racion_type_id`),
-  ADD KEY `FK_racion_animals_animals_animals_id` (`animals_id`);
+  ADD KEY `FK_racion_animals_animals_animals_id` (`animals_id`),
+  ADD KEY `FK_racion_animals_racion_type_racion_type_id` (`racion_type_id`);
 
 --
 -- Индексы таблицы `racion_type`
@@ -247,6 +379,20 @@ ALTER TABLE `reptail`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`role_id`);
+
+--
+-- Индексы таблицы `smotr`
+--
+ALTER TABLE `smotr`
+  ADD PRIMARY KEY (`id_smotr`),
+  ADD KEY `FK_smotr_personal_user_id` (`user_id`);
+
+--
+-- Индексы таблицы `veterinar`
+--
+ALTER TABLE `veterinar`
+  ADD PRIMARY KEY (`id_vet`),
+  ADD KEY `FK_veterinar_personal_user_id` (`user_i`);
 
 --
 -- Индексы таблицы `winter`
@@ -274,73 +420,85 @@ ALTER TABLE `zona_obitanya`
 -- AUTO_INCREMENT для таблицы `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `bird`
 --
 ALTER TABLE `bird`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `gender`
 --
 ALTER TABLE `gender`
-  MODIFY `gender_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `gender_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `mammals`
 --
 ALTER TABLE `mammals`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `personal`
 --
 ALTER TABLE `personal`
-  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `racion_animals`
 --
 ALTER TABLE `racion_animals`
-  MODIFY `racion_animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `racion_animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `racion_type`
 --
 ALTER TABLE `racion_type`
-  MODIFY `racion_type_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `racion_type_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `reptail`
 --
 ALTER TABLE `reptail`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `role`
 --
 ALTER TABLE `role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT для таблицы `smotr`
+--
+ALTER TABLE `smotr`
+  MODIFY `id_smotr` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `veterinar`
+--
+ALTER TABLE `veterinar`
+  MODIFY `id_vet` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `winter`
 --
 ALTER TABLE `winter`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `winter_r`
 --
 ALTER TABLE `winter_r`
-  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `animals_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `zona_obitanya`
 --
 ALTER TABLE `zona_obitanya`
-  MODIFY `habiat_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `habiat_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -350,26 +508,30 @@ ALTER TABLE `zona_obitanya`
 -- Ограничения внешнего ключа таблицы `animals`
 --
 ALTER TABLE `animals`
-  ADD CONSTRAINT `FK_animals_bird_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `bird` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_animals_gender_gender_id` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`gender_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_animals_mammals_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `mammals` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_animals_reptail_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `reptail` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_animals_racion_animals_racion_animals_id` FOREIGN KEY (`racion_animals_id`) REFERENCES `racion_animals` (`racion_animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_animals_smotr_id_smotr` FOREIGN KEY (`id_smotr`) REFERENCES `smotr` (`id_smotr`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_animals_veterinar_id_vet` FOREIGN KEY (`id_vet`) REFERENCES `veterinar` (`id_vet`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_animals_zona_obitanya_habiat_id` FOREIGN KEY (`habiat_id`) REFERENCES `zona_obitanya` (`habiat_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `bird`
 --
 ALTER TABLE `bird`
-  ADD CONSTRAINT `FK_bird_winter_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `winter` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_bird_animals_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `animals` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `mammals`
+--
+ALTER TABLE `mammals`
+  ADD CONSTRAINT `FK_mammals_animals_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `animals` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Ограничения внешнего ключа таблицы `personal`
 --
 ALTER TABLE `personal`
-  ADD CONSTRAINT `FK_personal_animals_id_smotr` FOREIGN KEY (`user_id`) REFERENCES `animals` (`id_smotr`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_personal_animals_id_vet` FOREIGN KEY (`user_id`) REFERENCES `animals` (`id_vet`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_personal_animals_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `animals` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_personal_gender_gender_id` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`gender_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_personal_personal_user_id` FOREIGN KEY (`married_id`) REFERENCES `personal` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_personal_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -383,7 +545,31 @@ ALTER TABLE `racion_animals`
 -- Ограничения внешнего ключа таблицы `reptail`
 --
 ALTER TABLE `reptail`
-  ADD CONSTRAINT `FK_reptail_winter_r_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `winter_r` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_reptail_animals_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `animals` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `smotr`
+--
+ALTER TABLE `smotr`
+  ADD CONSTRAINT `FK_smotr_personal_user_id` FOREIGN KEY (`user_id`) REFERENCES `personal` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `veterinar`
+--
+ALTER TABLE `veterinar`
+  ADD CONSTRAINT `FK_veterinar_personal_user_id` FOREIGN KEY (`user_i`) REFERENCES `personal` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `winter`
+--
+ALTER TABLE `winter`
+  ADD CONSTRAINT `FK_winter_bird_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `bird` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ограничения внешнего ключа таблицы `winter_r`
+--
+ALTER TABLE `winter_r`
+  ADD CONSTRAINT `FK_winter_r_reptail_animals_id` FOREIGN KEY (`animals_id`) REFERENCES `reptail` (`animals_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
